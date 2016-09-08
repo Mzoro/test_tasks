@@ -9,10 +9,17 @@ def count_time(first_time, second_time, quantity)
   # time by both copiers and the time it will take
   
   # determine how many such passes we can do to perform a predetermined number of copies
-  limit = (quantity - 1).div(min_time + max_time)
+  # let's check if maxtime is divisible by mintime
 
-  simultaneous_quantity = 1 + limit * (min_time + max_time)
-  simultaneous_time = min_time + limit * min_time * max_time
+  if max_time.divmod(min_time)[1].zero?
+    limit = (quantity - 1).div(1 + max_time.div(min_time))
+    simultaneous_quantity = 1 + limit * (1 + max_time.div(min_time))
+    simultaneous_time = min_time + limit * max_time
+  else
+    limit = (quantity - 1).div(min_time + max_time)
+    simultaneous_quantity = 1 + limit * (min_time + max_time)
+    simultaneous_time = min_time + limit * min_time * max_time
+  end
   
   if quantity - simultaneous_quantity != 0
     remain_quantity = quantity - simultaneous_quantity
@@ -44,4 +51,4 @@ def count_time(first_time, second_time, quantity)
   end
   return total_time
 end
-puts count_time(3, 7, 13)
+puts count_time(3, 5, 20)

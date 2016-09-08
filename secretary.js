@@ -12,11 +12,28 @@ var maxTime = Math.max(firstXeroxTime, secondXeroxTime)
 // time by both copiers and the time it will take
   
 // determine how many such passes we can do to perform a predetermined number of copies
+// let's check if maxtime is divisible by mintime
 
-var limit = Math.floor((quantity - 1)/(minTime + maxTime))
+var limit = 0
+var simultaneousQuantity = 0
+var simultaneousTime = 0
 
-var simultaneousQuantity = 1 + limit * (minTime + maxTime)
-var simultaneousTime = minTime + limit * minTime * maxTime
+// define function which will take decimal part of number
+
+function getDecimal(num) {
+  return num - Math.floor(num);
+}
+
+if (getDecimal(maxTime/minTime) === 0 ) {
+  limit = Math.floor((quantity - 1)/(maxTime/minTime + 1))
+  simultaneousQuantity = 1 + limit * (maxTime/minTime + 1)
+  simultaneousTime = minTime + limit * maxTime
+} else {
+  limit = Math.floor((quantity - 1)/(maxTime + minTime))
+  simultaneousQuantity = 1 + limit * (minTime + maxTime)
+  simultaneousTime = minTime + limit * minTime * maxTime
+}
+
 var totalTime = 0
 
 if (quantity - simultaneousQuantity !== 0) {
